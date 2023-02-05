@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+<h1 style="font-size: 100px;">¡Bienvenido {{ usuario }}!</h1>
+{% endblock %}
+{% block form %}
+<li class="list-group-item">
+<br>
+<p style="font-size:30px;">¡Tu registro se ha completado de manera correcta!</p>
+<hr>
+<p style="font-size:20px;">Hemos enviado un email de confirmacion a {{ correo }}.</p>
+<hr>
+<a class="btn btn-primary" href="{{ url_for('perfil', user=usuario) }}" role="button">Accede a tu perfil</a>
+<br>
+</li>
+{% endblock %}
