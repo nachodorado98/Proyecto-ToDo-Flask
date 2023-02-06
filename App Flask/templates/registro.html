@@ -8,16 +8,16 @@
 <br>
   <form method="POST" action="{{ url_for('bienvenido') }}">
   <div class="mb-3">
-    <input type="text" class="form-control" name="nombre" placeholder="Nombre" style="width:300px">
+    <input type="text" class="form-control" name="nombre" placeholder="Nombre" autocomplete="off" style="width:300px">
   </div>
   <div class="mb-3">
-    <input type="text" class="form-control" name="usuario" placeholder="Usuario" style="width:300px">
+    <input type="text" class="form-control" name="usuario" placeholder="Usuario" autocomplete="off" style="width:300px">
   </div>
   <div class="mb-3">
-    <input type="email" class="form-control" name="correo" placeholder="Correo" style="width:300px">
+    <input type="email" class="form-control" name="correo" placeholder="Correo" autocomplete="off" style="width:300px">
   </div>
   <div class="mb-3">
-    <input type="password" class="form-control" name="contrasena" placeholder="Contraseña" style="width:300px">
+    <input type="password" class="form-control" name="contrasena" placeholder="Contraseña" autocomplete="off" style="width:300px">
   </div>
   <button type="submit" class="btn btn-primary">Registrarse</button>
 </form>
