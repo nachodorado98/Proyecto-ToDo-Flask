@@ -1,0 +1,33 @@
+{% extends 'perfil.html' %}
+{% block titulo %}
+<h1 style="font-size: 80px;">Completar Tarea</h1>
+{% endblock %}
+{% block cuerpo %}
+<br>
+<ul class="list-group" style="width:500px">
+<li class="list-group-item">
+<br>
+  <form method="POST" action="{{ url_for('insertar_tarea_completa', usuario=usuario, codtarea=codtarea) }}">
+  <div class="mb-3">
+  	<label for="titulo" class="form-label" style="font-size: 25px;">Titulo de la Tarea</label>
+    <p>{{ tarea_a_completar.0 }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="descripcion" class="form-label" style="font-size: 25px;">Descripcion de la Tarea</label>
+    <p>{{ tarea_a_completar.1 }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="categoria" style="font-size: 25px;">Categoria de la Tarea</label>
+    <p>{{ tarea_a_completar.2 }}</p>
+  </div>
+  <div class="mb-3">
+  	<label for="comentario" style="font-size: 25px;">Comentario de la Tarea</label>
+    <textarea name="comentario" rows="3" cols="40" placeholder="Comentario"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Completar</button>
+</form>
+<br>
+</li>
+</ul>
+
+{% endblock %}

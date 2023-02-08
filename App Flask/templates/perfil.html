@@ -4,34 +4,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<div style="background:#d1d6d6;">
 <br>
   <div class="row">
     <div class="col">
       <div class="justify-content-flex-start">
         <a class="btn btn-outline-secondary" href="{{ url_for('perfil', usuario=usuario) }}" role="button"
-        style="font-size:25px; color: #000000"><strong>{{ usuario }}</strong></a>
-        <a class="btn btn-outline-secondary" href="{{ url_for('insertar_tarea', usuario=usuario) }}" role="button" style="font-size:25px; color: #000000">Nueva Tarea</a>
+        style="font-size:20px; color: #000000"><strong>{{ usuario }}</strong></a>
+        <a class="btn btn-outline-secondary" href="{{ url_for('insertar_tarea', usuario=usuario) }}" role="button" style="font-size:20px; color: #000000"><strong>Nueva Tarea</strong></a>
+        <a class="btn btn-outline-secondary" href="{{ url_for('tareas_completadas', usuario=usuario) }}" role="button" style="font-size:20px; color: #000000"><strong>Tareas Completadas</strong></a>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-4">
     </div>
     <div class="col">
       <div class="justify-content-flex-end">
-<a class="btn btn-outline-secondary" href="{{ url_for('inicio') }}" role="button" style="font-size:25px; color: #000000">Cerrar Sesion</a>
+<a class="btn btn-outline-secondary" href="{{ url_for('inicio') }}" role="button" style="font-size:20px; color: #000000"><strong>Cerrar Sesion</strong></a>
 </div>
     </div>
   </div>
-<br>
+  <br>
+</div>
 <div style="background:#d7dcdc;">
 <center>
   <br>
 {% block titulo %}
-<h1 style="font-size: 100px;">Tareas Pendientes</h1>
+<h1 style="font-size: 80px;">Tareas Pendientes</h1>
 {% endblock %}
 {% block cuerpo %}
 <br>
 {% if tareas==[] %}
-<h2 style="font-size: 40px;">No hay ninguna tarea introducida aun...</h2>
+<h2 style="font-size: 40px;">No hay ninguna tarea introducida por completar aun...</h2>
 <br>
 <a class="btn btn-primary" href="{{ url_for('insertar_tarea', usuario=usuario) }}" role="button">Pulsa aqui para introducir la primera</a>
 {% else %}
@@ -55,7 +58,7 @@
       <td style="background-color: #ffffff; padding: 10px;"><strong>{{ i.2[:65] }}</strong></td>
       <td style="background-color: #ffffff; padding: 10px;"><strong>{{ i.3 }}</strong></td>
       <td style="background-color: #ffffff; padding: 10px;">
-      	<a href="#"><button type="button" class="btn btn-outline-secondary">Completar</button></a>
+      	<a href="{{ url_for('completar_tarea', usuario=usuario, codtarea=i.0) }}"><button type="button" class="btn btn-outline-secondary">Completar</button></a>
       </td>
     
     </tr>

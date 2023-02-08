@@ -82,3 +82,53 @@ class ConsultaTareas(ConsultaUsuarios):
 						(None, titulo, descripcion, categoria, 0, "", codigo))
 
 		self.bbdd.commit()
+
+
+	#Funcion para obtener los datos de una tarea por su codigo
+	def tarea_por_codigo(self, codigo):
+		self.c.execute("""USE tareasbbdd""")
+		self.c.execute("""SELECT Titulo, Descripcion, Categoria
+						FROM tareas
+						WHERE CodTarea=%s""",
+						(codigo,))
+		
+		return self.c.fetchone()
+
+	#Funcion para comprobar que una tarea es de un usuario por su codigo
+	def comprobar_tarea_pertenece_usuario(self, tarea, codigo):
+		self.c.execute("""USE tareasbbdd""")
+		self.c.execute("""SELECT *
+						FROM tareas
+						WHERE CodTarea=%s
+						AND CodUsuario=%s""",
+						(tarea,codigo))
+		
+		#Si no devuelve None es que si es del usuario esa tarea, devolvemos True
+		if self.c.fetchone()!=None:
+			return True
+		#Si devuelve None es que no es del usuario esa tarea, devolvemos False
+		else:
+			return False
+
+	#Funcion para actualizar y completar una tarea añadiendo el comentario
+	def completar_tarea_comentario(self, codigo, comentario):
+		self.c.execute("""USE tareasbbdd""")
+		self.c.execute("""UPDATE tareas
+						SET Comentarios=%s, Completada=1
+						WHERE CodTarea=%s""",
+						(comentario, codigo))
+		self.bbdd.commit()
+
+
+	#Funcion para obtener las tareas completadas de un usuario en concreto
+	def tareas_completas_usuario(self, usuario):
+		self.c.execute("""USE tareasbbdd""")
+		self.c.execute("""SELECT t.CodTarea, t.Titulo, t.Descripcion, t.Categoria, t.Comentarios 
+						FROM usuarios u
+						JOIN tareas t
+						ON u.CodUsuario=t.CodUsuario
+						WHERE u.Usuario=%s
+						AND t.Completada=1""",
+						(usuario,))
+		
+		return self.c.fetchall()

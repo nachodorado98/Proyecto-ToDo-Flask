@@ -117,7 +117,7 @@ def insertar_tarea(usuario):
 	global acceso
 
 	#Categorias que se pueden seleccionar
-	categorias=["Ocio", "Trabajo", "Pareja", "Familia", "Salud", "Deporte"]
+	categorias=["Ocio", "Trabajo", "Pareja", "Familia", "Salud", "Deporte", "Estudios"]
 
 	#Comprobamso que hay acceso
 	if acceso:
@@ -155,6 +155,85 @@ def insertar_exito(usuario):
 	#Si hay error redireccionamos a la pagina de inicio
 	except:
 		return redirect(url_for("inicio"))
+
+#Funcion para completar una tarea mediante su codigo
+@app.route("/<usuario>/completartarea<codtarea>")
+def completar_tarea(usuario, codtarea):
+	global acceso
+	#Probamos que no hay error al completar
+	try:
+		#Comprobamso que hay acceso
+		if acceso:
+			#Obtenemos los datos de la tarea que se va a completar llamando a tarea_por_codigo
+			tarea_a_completar=consulta_tareas.tarea_por_codigo(codtarea)
+			#Obtenemos el codigo del usuario llamando a codigo_usuario
+			codigo=consulta_usuarios.codigo_usuario(usuario)
+			#Comprobamos que la tarea es del usuario llamando a comprobar_tarea_pertenece_usuario
+			#Lo hacemos para que no se llegue a una tarea de otra persona por la url
+			if consulta_tareas.comprobar_tarea_pertenece_usuario(codtarea, codigo):
+				#Devolvemos el template de la pagina para completar la tarea pasando el usuario, la tarea y el codigo
+				return render_template("completar_tarea.html", usuario=usuario, tarea_a_completar=tarea_a_completar, codtarea=codtarea)
+
+			#Si no es la tarea del usuario redirecionamos a inicio
+			else:
+				return redirect(url_for("inicio"))
+		#Si no hay acceso redireccionamos a inicio
+		else:
+			return redirect(url_for("inicio"))
+
+	#Si hay error redireccionamos a la pagina de inicio
+	except:
+		return redirect(url_for("inicio"))
+
+
+#Funcion para obtener los datos de la tarea nueva a introducir
+@app.route("/<usuario>/completartareaexito<codtarea>", methods=["GET","POST"])
+def insertar_tarea_completa(usuario, codtarea):
+
+	#Probamos que no hay error en la nueva tarea
+	try:
+		#Obtenemos el comentario de la tarea introducidos en el formulario
+		comentario=request.form.get("comentario")
+
+		#Comprobamos que el comentario esta introducido
+		if comentario:
+			#Actualizamos la tarea poniendola completa y añadiendo el comentario llamando a completar_tarea_comentario
+			consulta_tareas.completar_tarea_comentario(codtarea, comentario)
+			return redirect(url_for("perfil", usuario=usuario))
+
+		#Si no lo estan redireccionamos a la pagina de insertar la tarea
+		else:
+			return redirect(url_for("completar_tarea", usuario=usuario, codtarea=codtarea))
+
+	#Si hay error redireccionamos a la pagina de inicio
+	except:
+		return redirect(url_for("inicio"))
+
+#Funcion para la direccion de la pagina de las tareas completadas
+@app.route("/<usuario>/tareascompletadas")
+def tareas_completadas(usuario):
+	global acceso
+
+	#Probamos que no hay error al mostrar las tareas completas
+	try:
+		#Comprobamso que hay acceso
+		if acceso:
+			#Obtenemos las tareas completas del usuario llamando a tareas_completas_usuario
+			tareas_completas=consulta_tareas.tareas_completas_usuario(usuario)
+			#Devolvemos el template para ver la pagina de las tareas completadas pasandole el usuario y las tareas
+			return render_template("completadas.html", usuario=usuario, tareas_completas=tareas_completas)
+
+		#Si no hay acceso redireccionamos a inicio
+		else:
+			return redirect(url_for("inicio"))
+
+	#Si hay error redireccionamos a la pagina de inicio
+	except:
+		return redirect(url_for("inicio"))
+
+
+
+	
 
 #Condicion principal para la ejecucion del programa
 if __name__=="__main__":

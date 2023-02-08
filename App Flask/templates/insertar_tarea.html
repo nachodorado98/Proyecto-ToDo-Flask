@@ -1,6 +1,6 @@
 {% extends 'perfil.html' %}
 {% block titulo %}
-<h1 style="font-size: 100px;">Insertar Nueva Tarea</h1>
+<h1 style="font-size: 80px;">Insertar Nueva Tarea</h1>
 {% endblock %}
 {% block cuerpo %}
 <br>
@@ -9,16 +9,16 @@
 <br>
   <form method="POST" action="{{ url_for('insertar_exito', usuario=usuario) }}">
   <div class="mb-3">
-  	<label for="titulo" class="form-label">Titulo de la Tarea</label>
+  	<label for="titulo" class="form-label" style="font-size: 25px;">Titulo de la Tarea</label>
     <input type="text" class="form-control" name="titulo" placeholder="Titulo" style="width:300px" autocomplete="off">
   </div>
   <div class="mb-3">
-  	<label for="descripcion" class="form-label">Descripcion de la Tarea</label>
-    <textarea name="descripcion" rows="4" cols="50" placeholder="Descripcion"></textarea>
+  	<label for="descripcion" class="form-label" style="font-size: 25px;">Descripcion de la Tarea</label>
+    <textarea name="descripcion" rows="3" cols="40" placeholder="Descripcion"></textarea>
   </div>
   <div class="mb-3">
   <div>
-  <label for="cars">Categoria de la Tarea</label>
+  <label for="categoria" style="font-size: 25px;">Categoria de la Tarea</label>
 	</div>
 	<br>
 	<select name="categoria" style="width: 200px; height: 30px;">
@@ -30,6 +30,7 @@
 <br>
   <button type="submit" class="btn btn-primary">Aceptar</button>
 </form>
+<br>
 </li>
 </ul>
 

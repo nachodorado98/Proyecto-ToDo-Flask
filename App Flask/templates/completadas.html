@@ -1,0 +1,37 @@
+{% extends 'perfil.html' %}
+{% block titulo %}
+<h1 style="font-size: 80px;">Tareas Completadas</h1>
+{% endblock %}
+{% block cuerpo %}
+<br>
+{% if tareas_completas==[] %}
+<h2 style="font-size: 40px;">No hay ninguna tarea completa aun...</h2>
+<br>
+<a class="btn btn-primary" href="{{ url_for('perfil', usuario=usuario) }}" role="button">Pulsa aqui para volver a las tareas sin completar</a>
+{% else %}
+<table class="table" style="border: 1px solid black; border-collapse: collapse; text-align: center; width: 1400px;">
+  <thead class="thead-dark" style="background-color: #bcbcbc;">
+    <tr>
+      <th scope="col" style="border: 1px solid black; font-size: 130%; font-family: times; width:5%">Tarea</th>
+      <th scope="col" style="border: 1px solid black; font-size: 130%; font-family: times; width:12%">Titulo</th>
+      <th scope="col" style="border: 1px solid black; font-size: 130%; font-family: times; width:30%">Descripcion</th>
+      <th scope="col" style="border: 1px solid black; font-size: 130%; font-family: times;width:5%">Categoria</th>
+      <th scope="col" style="border: 1px solid black; font-size: 130%; font-family: times;width:20%">Comentario</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for i in tareas_completas %}
+  	<tr style="height:20px;">
+      <td style="background-color: #ffffff;"><strong>{{ i.0 }}</strong></td>
+      <td style="background-color: #ffffff; padding: 10px;"><strong>{{ i.1 }}</strong></td>
+      <td style="background-color: #ffffff; padding: 10px;"><strong>{{ i.2[:65] }}</strong></td>
+      <td style="background-color: #ffffff; padding: 10px;"><strong>{{ i.3 }}</strong></td>
+      <td style="background-color: #ffffff; padding: 10px;">{{ i.4[:65] }}</td>
+    </tr>
+	{% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+
+{% endblock %}
