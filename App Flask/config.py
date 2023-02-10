@@ -2,7 +2,10 @@
 import mysql.connector
 
 class Config():
-	def crear_conexion(self):
+
+	#Creamos una funcion para la conexion
+	@staticmethod
+	def crear_conexion():
 		#Creamos la conexion con mysql
 		bbdd=mysql.connector.connect(host="localhost", user="root", passwd="root")
 		#Creamos un cursor

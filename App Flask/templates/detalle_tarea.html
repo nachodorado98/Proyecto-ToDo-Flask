@@ -1,0 +1,27 @@
+{% extends 'perfil.html' %}
+{% block titulo %}
+<h1 style="font-size: 80px;">Detalle Tarea</h1>
+{% endblock %}
+{% block cuerpo %}
+<br>
+<ul class="list-group" style="width:680px">
+<li class="list-group-item">
+<br>
+  <div class="mb-3">
+  	<label for="titulo" class="form-label" style="font-size: 40px;">Título de la Tarea</label>
+    <p style="font-size: 25px;">{{ tarea.0 }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="descripcion" class="form-label" style="font-size: 40px;">Descripción de la Tarea</label>
+    <p style="font-size: 25px;">{{ tarea.1 }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="categoria" style="font-size: 40px;">Categoría de la Tarea</label>
+    <p style="font-size: 25px;">{{ tarea.2 }}</p>
+  </div>
+<br>
+</li>
+</ul>
+
+
+{% endblock %}

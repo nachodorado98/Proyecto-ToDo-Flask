@@ -2,6 +2,8 @@
 from flask import Flask, render_template, request, url_for, redirect
 #Importamos las clases de ConsultaUsuarios y ConsultaTareas
 from consultas_bbdd import ConsultaUsuarios, ConsultaTareas
+#Importamos la clase Administrador
+from admin import Administrador
 
 #Creamos la app
 app=Flask(__name__)
@@ -75,10 +77,16 @@ def bienvenido():
 			if consulta_usuarios.usuario_correo_unicos(usuario, correo):
 				#Damos acceso
 				acceso=True
+				#Comprobamos que se ha enviado o no el correo de confirmacion llamando a enviar_correo
+				if Administrador.enviar_correo(nombre, usuario, correo):
+					correo_confirmacion=f"Se ha enviado un correo de confirmacion a la direccion {correo}!!"
+				else:
+					correo_confirmacion=f"No se ha enviado un correo de confirmacion a la direccion {correo}!!"
+	         
 				#Insertamos el nuevo usuario con sus datos llamando a insertar_usuario_nuevo
 				consulta_usuarios.insertar_usuario_nuevo(nombre, usuario, contrasena, correo)
 				#Devolvemos el template de la pagina de bienvenida y pasamos el usuario y el correo
-				return render_template("bienvenido.html", usuario=usuario, correo=correo)
+				return render_template("bienvenido.html", usuario=usuario, correo_confirmacion=correo_confirmacion)
 			
 			#Si el usuario o el correo no son unicos edireccionamos a la pagina del registro
 			else:
@@ -159,6 +167,7 @@ def insertar_exito(usuario):
 #Funcion para completar una tarea mediante su codigo
 @app.route("/<usuario>/completartarea<codtarea>")
 def completar_tarea(usuario, codtarea):
+
 	global acceso
 	#Probamos que no hay error al completar
 	try:
@@ -232,6 +241,36 @@ def tareas_completadas(usuario):
 		return redirect(url_for("inicio"))
 
 
+@app.route("/<usuario>/detalletarea<codtarea>")
+def detalle_tarea(usuario, codtarea):
+
+	global acceso
+	#Probamos que no hay error al completar
+	try:
+		#Comprobamso que hay acceso
+		if acceso:
+			#Obtenemos los datos de la tarea que se va a completar llamando a tarea_por_codigo
+			tarea=consulta_tareas.tarea_por_codigo(codtarea)
+			#Obtenemos el codigo del usuario llamando a codigo_usuario
+			codigo=consulta_usuarios.codigo_usuario(usuario)
+			#Comprobamos que la tarea es del usuario llamando a comprobar_tarea_pertenece_usuario
+			#Lo hacemos para que no se llegue a una tarea de otra persona por la url
+			if consulta_tareas.comprobar_tarea_pertenece_usuario(codtarea, codigo):
+				#Devolvemos el template de la pagina para completar la tarea pasando el usuario, la tarea y el codigo
+				return render_template("detalle_tarea.html", usuario=usuario, tarea=tarea, codtarea=codtarea)
+			
+			#Si no es la tarea del usuario redirecionamos a inicio
+			else:
+				return redirect(url_for("inicio"))
+		#Si no hay acceso redireccionamos a inicio
+		else:
+			return redirect(url_for("inicio"))
+
+	#Si hay error redireccionamos a la pagina de inicio
+	except:
+		return redirect(url_for("inicio"))
+
+	
 
 	
 

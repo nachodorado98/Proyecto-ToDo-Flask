@@ -5,7 +5,7 @@ from config import Config
 class ConsultaUsuarios():
 
 	#Creamos la conexion
-	conexion=Config().crear_conexion()
+	conexion=Config.crear_conexion()
 	bbdd=conexion[0]
 	c=conexion[1]
 
@@ -59,12 +59,13 @@ class ConsultaUsuarios():
 						(usuario,))
 		return self.c.fetchone()[0]
 
+#Creamos la clase ConsultaTareas que hereda de la anterior
 class ConsultaTareas(ConsultaUsuarios):
 
 	#Funcion para obtener las tareas no completadas de un usuario en concreto
 	def tareas_no_completadas(self, usuario):
 		self.c.execute("""USE tareasbbdd""")
-		self.c.execute("""SELECT t.CodTarea, t.Titulo, t.Descripcion, t.Categoria 
+		self.c.execute("""SELECT t.CodTarea, t.Titulo, t.Categoria 
 						FROM usuarios u
 						JOIN tareas t
 						ON u.CodUsuario=t.CodUsuario
