@@ -133,3 +133,12 @@ class ConsultaTareas(ConsultaUsuarios):
 						(usuario,))
 		
 		return self.c.fetchall()
+
+
+	#Funcion para eliminar una tarea por su codigo
+	def eliminar_tarea(self, tarea):
+		self.c.execute("""USE tareasbbdd""")
+		self.c.execute("""DELETE FROM tareas
+						WHERE CodTarea=%s""",
+						(tarea,))
+		self.bbdd.commit()

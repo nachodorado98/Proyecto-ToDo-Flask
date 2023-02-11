@@ -45,6 +45,7 @@
       <th scope="col" style="border: 1px solid black; font-size: 130%; font-family: times; width:15%">Titulo</th>
       <th scope="col" style="border: 1px solid black; font-size: 130%; font-family: times;width:12%">Categoria</th>
       <th scope="col" style="border: 1px solid black; font-size: 130%; font-family: times;width:10%">No Completada</th>
+      <th scope="col" style="border: 1px solid black; font-size: 130%; font-family: times;width:10%">Eliminar</th>
     </tr>
   </thead>
   <tbody>
@@ -57,6 +58,9 @@
       <td style="background-color: #ffffff; padding: 10px;"><strong>{{ i.2 }}</strong></td>
       <td style="background-color: #ffffff; padding: 10px;">
       	<a href="{{ url_for('completar_tarea', usuario=usuario, codtarea=i.0) }}"><button type="button" class="btn btn-outline-secondary">Completar</button></a>
+      </td>
+      <td style="background-color: #ffffff; padding: 10px;">
+        <a href="{{ url_for('borrar_tarea', usuario=usuario, codtarea=i.0) }}"><button type="button" class="btn btn-outline-secondary">Eliminar</button></a>
       </td>
     
     </tr>

@@ -241,22 +241,23 @@ def tareas_completadas(usuario):
 		return redirect(url_for("inicio"))
 
 
+#Funcion para la pagina de detalle de la tarea
 @app.route("/<usuario>/detalletarea<codtarea>")
 def detalle_tarea(usuario, codtarea):
 
 	global acceso
 	#Probamos que no hay error al completar
 	try:
-		#Comprobamso que hay acceso
+		#Comprobamos que hay acceso
 		if acceso:
-			#Obtenemos los datos de la tarea que se va a completar llamando a tarea_por_codigo
+			#Obtenemos los datos de la tarea que se va a detallar llamando a tarea_por_codigo
 			tarea=consulta_tareas.tarea_por_codigo(codtarea)
 			#Obtenemos el codigo del usuario llamando a codigo_usuario
 			codigo=consulta_usuarios.codigo_usuario(usuario)
 			#Comprobamos que la tarea es del usuario llamando a comprobar_tarea_pertenece_usuario
 			#Lo hacemos para que no se llegue a una tarea de otra persona por la url
 			if consulta_tareas.comprobar_tarea_pertenece_usuario(codtarea, codigo):
-				#Devolvemos el template de la pagina para completar la tarea pasando el usuario, la tarea y el codigo
+				#Devolvemos el template de la pagina para el detalle de la tarea pasando el usuario, la tarea y el codigo
 				return render_template("detalle_tarea.html", usuario=usuario, tarea=tarea, codtarea=codtarea)
 			
 			#Si no es la tarea del usuario redirecionamos a inicio
@@ -270,9 +271,58 @@ def detalle_tarea(usuario, codtarea):
 	except:
 		return redirect(url_for("inicio"))
 
+
+#Funcion para borrar una tarea mediante su codigo
+@app.route("/<usuario>/borrartarea<codtarea>")
+def borrar_tarea(usuario, codtarea):
+
+	global acceso
+	#Probamos que no hay error al completar
+	try:
+		#Comprobamos que hay acceso
+		if acceso:
+			#Obtenemos los datos de la tarea que se va a borrar llamando a tarea_por_codigo
+			tarea_a_borrar=consulta_tareas.tarea_por_codigo(codtarea)
+			#Obtenemos el codigo del usuario llamando a codigo_usuario
+			codigo=consulta_usuarios.codigo_usuario(usuario)
+			#Comprobamos que la tarea es del usuario llamando a comprobar_tarea_pertenece_usuario
+			#Lo hacemos para que no se llegue a una tarea de otra persona por la url
+			if consulta_tareas.comprobar_tarea_pertenece_usuario(codtarea, codigo):
+				#Devolvemos el template de la pagina para borrar la tarea pasando el usuario, la tarea y el codigo
+				return render_template("borrar_tarea.html", usuario=usuario, tarea_a_borrar=tarea_a_borrar, codtarea=codtarea)
+
+			#Si no es la tarea del usuario redirecionamos a inicio
+			else:
+				return redirect(url_for("inicio"))
+		#Si no hay acceso redireccionamos a inicio
+		else:
+			return redirect(url_for("inicio"))
+
+	#Si hay error redireccionamos a la pagina de inicio
+	except:
+		return redirect(url_for("inicio"))
 	
 
-	
+
+#Funcion para borrar la tarea indicada
+@app.route("/<usuario>/borrartareaexito<codtarea>", methods=["GET","POST"])
+def borrar_exito(usuario, codtarea):
+
+	#Probamos que no hay error en la eliminacion de la tarea
+	#try:
+		
+	#Eliminamos la tarea llamando a eliminar_tarea
+	consulta_tareas.eliminar_tarea(codtarea)
+	#Redireccionamos a la pagina del perfil pasandole el usuario
+	return redirect(url_for("perfil", usuario=usuario))
+
+	#Si hay error redireccionamos a la pagina de inicio
+	#except:
+	#	return redirect(url_for("inicio"))	
+
+
+
+
 
 #Condicion principal para la ejecucion del programa
 if __name__=="__main__":

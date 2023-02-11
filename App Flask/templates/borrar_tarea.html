@@ -1,0 +1,32 @@
+{% extends 'perfil.html' %}
+{% block titulo %}
+<h1 style="font-size: 80px;">Borrar Tarea</h1>
+{% endblock %}
+{% block cuerpo %}
+<br>
+<ul class="list-group" style="width:500px">
+<li class="list-group-item">
+<br>
+  <form method="POST" action="{{ url_for('borrar_exito', usuario=usuario, codtarea=codtarea) }}">
+  <div class="mb-3">
+    <label for="titulo" class="form-label" style="font-size: 25px;">Titulo de la Tarea</label>
+    <p>{{ tarea_a_borrar.0 }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="descripcion" class="form-label" style="font-size: 25px;">Descripcion de la Tarea</label>
+    <p>{{ tarea_a_borrar.1 }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="categoria" style="font-size: 25px;">Categoria de la Tarea</label>
+    <p>{{ tarea_a_borrar.2 }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="respuesta" style="font-size: 25px;">¿Seguro que deseas eliminar esta tarea?</label>
+  </div>
+  <button type="submit" class="btn btn-primary" style="font-size:25px;">Si&nbsp;</button>
+  <a class="btn btn-primary" href="{{ url_for('perfil', usuario=usuario) }}" role="button" style="font-size:25px; color: #ffffff">No</a>
+</form>
+<br>
+</li>
+</ul>
+{% endblock %}
