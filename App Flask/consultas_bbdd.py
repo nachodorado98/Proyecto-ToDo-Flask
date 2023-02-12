@@ -1,5 +1,6 @@
 #Importamos la clase Config para la configiracion de MySQL
 from config import Config
+from datetime import datetime
 
 #Creamos la clase ConsultaUsuarios
 class ConsultaUsuarios():
@@ -59,13 +60,14 @@ class ConsultaUsuarios():
 						(usuario,))
 		return self.c.fetchone()[0]
 
+
 #Creamos la clase ConsultaTareas que hereda de la anterior
 class ConsultaTareas(ConsultaUsuarios):
 
 	#Funcion para obtener las tareas no completadas de un usuario en concreto
 	def tareas_no_completadas(self, usuario):
 		self.c.execute("""USE tareasbbdd""")
-		self.c.execute("""SELECT t.CodTarea, t.Titulo, t.Categoria 
+		self.c.execute("""SELECT t.CodTarea, t.Titulo, t.Categoria, t.FechaCreacion 
 						FROM usuarios u
 						JOIN tareas t
 						ON u.CodUsuario=t.CodUsuario
@@ -77,10 +79,13 @@ class ConsultaTareas(ConsultaUsuarios):
 
 	#Funcion para insertar una tarea de un usuario (no completa 0 y sin comentarios "")
 	def insertar_tarea(self, titulo, descripcion, categoria, codigo):
+
+		fecha_creacion=datetime.now().strftime("%Y-%m-%d")
+
 		self.c.execute("""USE tareasbbdd""")
 		self.c.execute("""INSERT INTO tareas
-						VALUES(%s, %s, %s, %s, %s, %s, %s)""",
-						(None, titulo, descripcion, categoria, 0, "", codigo))
+						VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+						(None, titulo, descripcion, categoria, 0, "", fecha_creacion, "1900-01-01",codigo))
 
 		self.bbdd.commit()
 
@@ -88,7 +93,7 @@ class ConsultaTareas(ConsultaUsuarios):
 	#Funcion para obtener los datos de una tarea por su codigo
 	def tarea_por_codigo(self, codigo):
 		self.c.execute("""USE tareasbbdd""")
-		self.c.execute("""SELECT Titulo, Descripcion, Categoria
+		self.c.execute("""SELECT Titulo, Descripcion, Categoria, FechaCreacion
 						FROM tareas
 						WHERE CodTarea=%s""",
 						(codigo,))
@@ -113,18 +118,21 @@ class ConsultaTareas(ConsultaUsuarios):
 
 	#Funcion para actualizar y completar una tarea añadiendo el comentario
 	def completar_tarea_comentario(self, codigo, comentario):
+
+		fecha_completada=datetime.now().strftime("%Y-%m-%d")
+
 		self.c.execute("""USE tareasbbdd""")
 		self.c.execute("""UPDATE tareas
-						SET Comentarios=%s, Completada=1
+						SET Comentarios=%s, Completada=1, FechaCompletada=%s
 						WHERE CodTarea=%s""",
-						(comentario, codigo))
+						(comentario, fecha_completada, codigo))
 		self.bbdd.commit()
 
 
 	#Funcion para obtener las tareas completadas de un usuario en concreto
 	def tareas_completas_usuario(self, usuario):
 		self.c.execute("""USE tareasbbdd""")
-		self.c.execute("""SELECT t.CodTarea, t.Titulo, t.Descripcion, t.Categoria, t.Comentarios 
+		self.c.execute("""SELECT t.CodTarea, t.Titulo, t.Descripcion, t.Categoria, t.Comentarios, t.FechaCompletada 
 						FROM usuarios u
 						JOIN tareas t
 						ON u.CodUsuario=t.CodUsuario

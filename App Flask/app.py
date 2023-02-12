@@ -309,16 +309,16 @@ def borrar_tarea(usuario, codtarea):
 def borrar_exito(usuario, codtarea):
 
 	#Probamos que no hay error en la eliminacion de la tarea
-	#try:
+	try:
 		
-	#Eliminamos la tarea llamando a eliminar_tarea
-	consulta_tareas.eliminar_tarea(codtarea)
-	#Redireccionamos a la pagina del perfil pasandole el usuario
-	return redirect(url_for("perfil", usuario=usuario))
+		#Eliminamos la tarea llamando a eliminar_tarea
+		consulta_tareas.eliminar_tarea(codtarea)
+		#Redireccionamos a la pagina del perfil pasandole el usuario
+		return redirect(url_for("perfil", usuario=usuario))
 
 	#Si hay error redireccionamos a la pagina de inicio
-	#except:
-	#	return redirect(url_for("inicio"))	
+	except:
+		return redirect(url_for("inicio"))	
 
 
 
